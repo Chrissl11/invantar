@@ -1,0 +1,69 @@
+h1 {
+    color: #333; /* Textfarbe */
+    font-size: 24px; /* Schriftgröße */
+}
+
+
+p {
+    line-height: 1.6; /* Zeilenhöhe */
+}
+
+
+a {
+    color: #007bff; /* Linkfarbe */
+    text-decoration: none; /* Keine Unterstreichung */
+}
+
+a:hover {
+    text-decoration: underline; /* Unterstreichung beim Überfahren mit der Maus */
+}
+input[type="text"],
+input[type="number"],
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Hervorhebung beim Fokus */
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Stil für Submit-Button */
+button[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+label {
+    font-weight: bold;
+}
+
+
+.error-message {
+    color: red;
+    font-size: 12px;
+}
+.category-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.category-item li {
+    margin-right: 10px;
+}
