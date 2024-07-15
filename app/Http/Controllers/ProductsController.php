@@ -92,11 +92,11 @@ class ProductsController extends Controller
         $product = Product::findOrFail($id);
       //  $categories = Category::all();
         $statuses = Status::all();
-      //  $inventory = Inventory::findOrFail($id);
+       $inventory = Inventory::findOrFail($id);
 
         return view('products.edit', [
             'product' => $product,
-         //   'inventory' => $inventory,
+           'inventory' => $inventory,
          //  'categories' => $categories,
             'statuses' => $statuses
         ]);
@@ -119,7 +119,7 @@ class ProductsController extends Controller
             'status_id' => 'required|exists:statuses,id'
         ]);
 
-        $product = Product::firstOrFail($id);
+        $product = Product::findOrFail($id);
         $product->product_name = $validatedData['product_name'];
         $product->product_number = $validatedData['product_number'];
         $product->product_purchasePrice = $validatedData['product_purchasePrice'];

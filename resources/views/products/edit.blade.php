@@ -6,13 +6,13 @@
             {{ session('success') }}
         </div>
     @endif
-
+    <?php (var_dump($inventory)) ?>
     <h3>Produkt "{{$product->product_name}}" bearbeiten</h3>
 
     <form action="{{ route('products.update', $product->id) }}" method="post">
         @csrf
         @method('PUT')
-       {{-- <input type="hidden" name="inventory_id" value="{{ $inventory->id }}">--}}
+        <input type="hidden" name="inventory_id" value="{{ $inventory->id }}">
 
         <div class="field">
             <label class="label">Produktname</label>
