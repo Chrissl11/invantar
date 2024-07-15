@@ -90,16 +90,12 @@ class ProductsController extends Controller
     public function edit(string $id)
     {
         $product = Product::findOrFail($id);
-      //  $categories = Category::all();
         $statuses = Status::all();
-       $inventory = Inventory::findOrFail($id);
-
+        $categories = Category::all();
         return view('products.edit', [
+            'categories' => $categories,
             'product' => $product,
-           'inventory' => $inventory,
-         //  'categories' => $categories,
-            'statuses' => $statuses
-        ]);
+            'statuses' => $statuses]);
     }
 
     /**
@@ -132,7 +128,7 @@ class ProductsController extends Controller
         $product->categories()->sync($validatedData['category_id'] ?? []);
 
 
-        return redirect()->route('products.edit', $product->inventory_id)->with('success', 'Produkt wurde erfolgreich aktualisiert!');
+        return redirect()->route('inventories.show', $product->inventory_id)->with('success', 'Produkt wurde erfolgreich aktualisiert!');
     }
 
     /**

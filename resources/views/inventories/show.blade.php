@@ -58,7 +58,6 @@
                     </tbody>
                 </table>
             @endif
-    <?php (var_dump($inventory)) ?>
 
                 <div class="box">
                     <h3>Neues Produkt hinzufügen</h3>

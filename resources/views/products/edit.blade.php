@@ -6,13 +6,12 @@
             {{ session('success') }}
         </div>
     @endif
-    <?php (var_dump($inventory)) ?>
     <h3>Produkt "{{$product->product_name}}" bearbeiten</h3>
 
     <form action="{{ route('products.update', $product->id) }}" method="post">
         @csrf
         @method('PUT')
-        <input type="hidden" name="inventory_id" value="{{ $inventory->id }}">
+        <input type="hidden" name="inventory_id" value="{{ $product->inventory_id }}">
 
         <div class="field">
             <label class="label">Produktname</label>
@@ -54,7 +53,7 @@
             <div class="control">
                 <div class="select">
                     <select name="category_id[]" multiple>
-                        @foreach($product->categories as $category)
+                        @foreach($categories as $category)
                             <option value="{{ $category->id }}" @if($product->categories->contains($category->id)) selected @endif>{{ $category->category_name }}</option>
                         @endforeach
                     </select>
