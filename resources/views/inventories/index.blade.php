@@ -6,13 +6,12 @@
             {{ session('success') }}
         </div>
     @endif
-
-    <h1>Inventare</h1>
-    <table class="table is-fullwidth">
+    <h2 class="h2">Inventare</h2>
+    <table class="table is-fullwidth table-primary">
         <thead>
         <tr>
-            <th>Inventory ID</th>
-            <th>Inventory Name</th>
+            <th>ID</th>
+            <th>Inventar Name</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -32,7 +31,8 @@
                 <td>
                     <div class="buttons">
                         <a class="button is-small is-info" href="{{ route('inventories.edit', $inventory->id) }}">Bearbeiten</a>
-                        <form action="{{ route('inventories.destroy', $inventory->id) }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Sind Sie sicher, dass Sie dieses Inventar löschen möchten?');">
+                        <form action="{{ route('inventories.destroy', $inventory->id) }}" method="POST"
+                               style="display: inline-block;" onsubmit="return confirm('Sind Sie sicher, dass Sie dieses Inventar löschen möchten?');">
                             @csrf
                             @method('DELETE')
                             <button class="button is-small is-danger" type="submit">Löschen</button>
@@ -43,11 +43,11 @@
         @endforeach
         </tbody>
     </table>
-    <h3>Neues Inventar erstellen</h3>
+    <h3 class="h3">Neues Inventar erstellen</h3>
     <form action="{{ route('inventories.store') }}" method="POST">
         @csrf
         <div class="field">
-            <label class="label">Inventory Name</label>
+            <label class="label">Inventar Name</label>
             <div class="control">
                 <input class="input" type="text" value="{{old('inventory_name')}}" required name="inventory_name" >
             </div>
