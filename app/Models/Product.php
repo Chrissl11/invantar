@@ -12,7 +12,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Product extends Model
 {
-    protected $primaryKey = 'id';
+    protected $fillable = [
+        'product_name',
+        'product_number',
+        'product_purchasePrice',
+        'product_residualValue',
+        'product_description',
+        'inventory_id',
+        'status_id',
+    ];
 
     public function inventory(): BelongsTo
     {

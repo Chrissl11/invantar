@@ -6,7 +6,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <h3>Produkt "{{$product->product_name}}" bearbeiten</h3>
+    <h3 class="h3">Produkt "{{$product->product_name}}" bearbeiten</h3>
 
     <form action="{{ route('products.update', $product->id) }}" method="post">
         @csrf
@@ -48,30 +48,34 @@
             </div>
         </div>
 
-        <div class="field">
-            <label class="label">Kategorie</label>
-            <div class="control">
-                <div class="select">
-                    <select name="category_id[]" multiple>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}" @if($product->categories->contains($category->id)) selected @endif>{{ $category->category_name }}</option>
-                        @endforeach
-                    </select>
+        <div class="field is-grouped">
+            <div class="field">
+                <label class="label">Kategorie</label>
+                <div class="control">
+                    <div class="select">
+                        <select name="category_id[]" multiple>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" @if($product->categories->contains($category->id)) selected @endif>{{ $category->category_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Status</label>
+                <div class="control">
+                    <div class="select">
+                        <select class="input" name="status_id" required>
+                            @foreach($statuses as $status)
+                                <option value="{{ $status->id }}" @if($product->status_id == $status->id) selected @endif>{{ $status->status_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div class="field">
-            <label class="label">Status</label>
-            <div class="control">
-                <select class="input" name="status_id" required>
-                    @foreach($statuses as $status)
-                        <option value="{{ $status->id }}" @if($product->status_id == $status->id) selected @endif>{{ $status->status_name }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
+        <br><br><br><br>
         <div class="field">
             <div class="control">
                 <button type="submit" class="button is-primary">Produkt aktualisieren</button>

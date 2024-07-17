@@ -46,7 +46,8 @@ class CategoriesController extends Controller
         if ($inventory_id) {
             $inventory_id = Inventory::findOrFail($inventory_id);
 
-            return redirect()->route('categories.create', ['inventory_id' => $inventory_id]);
+            return redirect()->route('categories.create', ['inventory_id' => $inventory_id])->with('success', 'Kategorie wurde erfolgreich hinzugefügt!');
+            ;
         }
 
         return redirect()->route('categories.create', [$category->id]);
@@ -88,7 +89,7 @@ class CategoriesController extends Controller
         if ($inventory_id) {
             $inventory_id = Inventory::findOrFail($inventory_id);
 
-            return redirect()->route('categories.create', ['inventory_id' => $inventory_id]);
+            return redirect()->route('categories.create', ['inventory_id' => $inventory_id])->with('success', 'Kategorie wurde erfolgreich gelöscht!');
         }
 
         return redirect()->route('categories.create')->with('success', 'Kategorie wurde erfolgreich gelöscht!');

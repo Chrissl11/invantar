@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
     @if(session('success'))
         <div class="alert alert-success">
@@ -6,8 +7,8 @@
         </div>
     @endif
 
-    <h1>Kategorien</h1>
-    <table class="table is-fullwidth">
+    <h2 class="h2">Kategorien</h2>
+    <table class="table is-fullwidth table-primary">cd
         <thead>
         <tr>
             <th>Kategorie</th>
@@ -45,7 +46,9 @@
             <button class="button is-primary" type="submit">Kategorie erstellen</button>
         </div>
     </form>
+
     <br><br><br>
+
     <div class="control">
         <a class="button is-secondary" href="{{ url('/inventories/' . $inventory_id) }}">Zurück</a>
     </div>
