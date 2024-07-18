@@ -7,6 +7,20 @@
         </div>
     @endif
 
+    <form action="{{ route('categories.store') }}" method="POST">
+        @csrf
+        <div class="field">
+            <label class="label">Neue Kategorie erstellen</label>
+            <div class="control">
+                <input class="input" type="text" name="category_name" placeholder="Kategoriename" required>
+            </div>
+        </div>
+
+        <div class="control">
+            <button class="button is-primary" type="submit">Kategorie erstellen</button>
+        </div>
+    </form>
+
     <h2 class="h2">Kategorien</h2>
     <table class="table is-fullwidth table-primary">
         <thead>
@@ -32,24 +46,6 @@
         </tbody>
     </table>
 
-    <form action="{{ route('categories.store') }}" method="POST">
-        @csrf
-        <input type="hidden" name="inventory_id" value="{{ $inventory_id }}">
-        <div class="field">
-            <label class="label">Neue Kategorie erstellen</label>
-            <div class="control">
-                <input class="input" type="text" name="category_name" placeholder="Kategoriename" required>
-            </div>
-        </div>
 
-        <div class="control">
-            <button class="button is-primary" type="submit">Kategorie erstellen</button>
-        </div>
-    </form>
 
-    <br><br><br>
-
-    <div class="control">
-        <a class="button is-secondary" href="{{ url('/inventories/' . $inventory_id) }}">Zurück</a>
-    </div>
 @endsection

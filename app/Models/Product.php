@@ -14,6 +14,7 @@ class Product extends Model
 {
 //TODO massenzuweisung Codedublikat zusammenfassen -> ProductsController -> methode store und update
     protected $fillable = [
+        'product_id',
         'product_name',
         'product_number',
         'product_purchasePrice',
@@ -21,6 +22,8 @@ class Product extends Model
         'product_description',
         'inventory_id',
         'status_id',
+        'usage_start_date',
+        'usage_end_date',
     ];
 
     public function inventory(): BelongsTo

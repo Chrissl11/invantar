@@ -34,6 +34,7 @@ class ProductsController extends Controller
      */
     public function create()
     {
+        $nextProductId = Product::max('id') + 1;
         $products = Product::all();
         $categories = Category::all();
         $statuses = Status::all();
@@ -44,6 +45,7 @@ class ProductsController extends Controller
             'categories' => $categories,
             'statuses' => $statuses,
             'inventories' => $inventories,
+            'nextProductId' => $nextProductId
         ]);
     }
 
@@ -56,36 +58,36 @@ class ProductsController extends Controller
             'product_name' => 'required',
             'product_number' => 'required',
             'product_purchasePrice' => 'required',
-            'product_residualValue' => 'required',
             'inventory_id' => 'required',
             'product_description' => '',
-            'category_id' => '',
-            'status_id' => ''
+            'category_id' => 'nullable|array',
+            'status_id' => '',
+            'usage_start_date' => 'required|date',
+            'usage_end_date' => 'nullable|date|after_or_equal:usage_start_date',
+
         ]);
 
         $product = new Product();
+        if (!empty($validatedData['product_id'])) {
+            $product->id = $validatedData['product_id'];
+        }
         $product->product_name = $validatedData['product_name'];
         $product->product_number = $validatedData['product_number'];
         $product->product_purchasePrice = $validatedData['product_purchasePrice'];
-        $product->product_residualValue = $validatedData['product_residualValue'];
         $product->product_description = $validatedData['product_description'];
         $product->inventory_id = $validatedData['inventory_id'];
         $product->status_id = $validatedData['status_id'];
+        $product->usage_start_date = $validatedData['usage_start_date'];
+        $product->usage_end_date = $validatedData['usage_end_date'];
         $product->saveOrFail();
 
-        /**
-         * product->categories = [1,3,5,6,77]
-         * $validatedData['category_id] = [3,5,69]
-         * 1. [1,3,5,6,77] -> [3,5]
-         * 2. [3,5,69] - [3,5] = [69]
-         *
-         */
 
-        foreach ($validatedData['category_id'] as $categoryId) {
-            $category = new CategoryProduct();
-            $category->product_id = $product->id;
-            $category->category_id = $categoryId;
-            $category->saveOrFail();
+            foreach ($validatedData['category_id'] as $categoryId) {
+                $category = new CategoryProduct();
+                $category->product_id = $product->id;
+                $category->category_id = $categoryId;
+                $category->saveOrFail();
+
         }
 
 
@@ -110,10 +112,13 @@ class ProductsController extends Controller
         $product = Product::findOrFail($id);
         $statuses = Status::all();
         $categories = Category::all();
+        $inventorie = Inventory::all();
         return view('products.edit', [
             'categories' => $categories,
             'product' => $product,
-            'statuses' => $statuses]);
+            'statuses' => $statuses,
+            'inventories' => $inventorie
+        ]);
     }
 
     /**
@@ -125,22 +130,24 @@ class ProductsController extends Controller
             'product_name' => 'required',
             'product_number' => 'required',
             'product_purchasePrice' => 'required|numeric',
-            'product_residualValue' => 'required|numeric',
             'product_description' => 'nullable|string',
             'inventory_id' => 'required|exists:inventories,id',
-            'category_id' => 'array',
+            'category_id' => 'nullable|array',
             'category_id.*' => 'exists:categories,id',
-            'status_id' => 'required|exists:statuses,id'
+            'status_id' => 'required|exists:statuses,id',
+            'usage_start_date' => 'required|date',
+            'usage_end_date' => 'nullable|date|after_or_equal:usage_start_date',
         ]);
 
         $product = Product::findOrFail($id);
         $product->product_name = $validatedData['product_name'];
         $product->product_number = $validatedData['product_number'];
         $product->product_purchasePrice = $validatedData['product_purchasePrice'];
-        $product->product_residualValue = $validatedData['product_residualValue'];
         $product->product_description = $validatedData['product_description'];
         $product->inventory_id = $validatedData['inventory_id'];
         $product->status_id = $validatedData['status_id'];
+        $product->usage_start_date = $validatedData['usage_start_date'];
+        $product->usage_end_date = $validatedData['usage_end_date'];
         $product->save();
 
         $product->categories()->sync($validatedData['category_id'] ?? []);

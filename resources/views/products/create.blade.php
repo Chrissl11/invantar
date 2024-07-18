@@ -12,31 +12,42 @@
         <div class="field">
             <label class="label">Produkt Name</label>
             <div class="control">
-                <input class="input" type="text" name="product_name" placeholder="Produkt Name" required>
+                <input class="input" type="text" name="product_name" placeholder="Produkt Name" required >
             </div>
         </div>
 
         <div class="field is-grouped">
+
             <div class="field">
                 <label class="label">Produktnummer</label>
                 <div class="control">
-                    <input class="input" type="text" name="product_number" placeholder="Nummer" required>
+                    <input class="input" type="text" name="product_number" placeholder="Produktnummer" value="{{ $nextProductId }}"  >
                 </div>
             </div>
 
             <div class="field">
-                <label class="label">Kaufpreis</label>
+                <label class="label">Verwendungsbeginn</label>
                 <div class="control">
-                    <input class="input" type="number" name="product_purchasePrice" placeholder="Kaufpreis" required>
+                    <input class="input" type="date" name="usage_start_date" required>
                 </div>
             </div>
 
             <div class="field">
-                <label class="label">Restwert</label>
+                <label class="label">Verwendungsende</label>
                 <div class="control">
-                    <input class="input" type="number" name="product_residualValue" placeholder="Restwert" required>
+                    <input class="input" type="date" name="usage_end_date">
                 </div>
             </div>
+
+            <div class="field">
+                <label class="label">Anschaffungspreis</label>
+                <div class="control">
+                    <input class="input" type="number" name="product_purchasePrice" placeholder="Anschaffungspreis" required>
+                </div>
+            </div>
+
+
+
         </div>
 
         <div class="field is-grouped">
@@ -44,7 +55,7 @@
                 <label class="label">Kategorie</label>
                 <div class="control">
                     <div class="select">
-                        <select name="category_id[]" multiple>
+                        <select name="category_id[]" multiple required>
                             <option value="" disabled selected>Wählen Sie eine Kategorie</option>
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->category_name }}</option>
@@ -83,9 +94,9 @@
         </div>
         <br><br><br><br>
         <div>
-            <label class="label">Beschreibung des Produkts</label>
+            <label class="label">Verwendung/Ort</label>
             <div class="control">
-                <textarea class="textarea" name="product_description" placeholder="Beschreibung des Produkts eingeben" required></textarea>
+                <textarea class="textarea" name="product_description" placeholder="Verwendung/Ort" ></textarea>
             </div>
         </div>
         <div class="field">

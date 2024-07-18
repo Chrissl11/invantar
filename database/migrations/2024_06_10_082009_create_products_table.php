@@ -24,6 +24,9 @@ return new class extends Migration
             $table->unsignedBigInteger('status_id');
             $table->foreign('status_id')->references('id')->on('statuses')->cascadeOnDelete();
         });
+        Schema::table('products', function (Blueprint $table) {
+            $table->integer('product_number')->autoIncrement()->unique();
+        });
     }
 
     /**

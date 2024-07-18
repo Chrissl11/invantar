@@ -6,12 +6,15 @@
             {{ session('success') }}
         </div>
     @endif
+
+    <div class="box">
+
     <h3 class="h3">Produkt "{{$product->product_name}}" bearbeiten</h3>
 
     <form action="{{ route('products.update', $product->id) }}" method="post">
         @csrf
         @method('PUT')
-        <input type="hidden" name="inventory_id" value="{{ $product->inventory_id }}">
+
 
         <div class="field">
             <label class="label">Produktname</label>
@@ -20,32 +23,37 @@
             </div>
         </div>
 
-        <div class="field">
-            <label class="label">Produktnummer</label>
-            <div class="control">
-                <input class="input" type="text" name="product_number" value="{{$product->product_number}}" required>
-            </div>
-        </div>
+        <div class="field is-grouped">
 
-        <div class="field">
-            <label class="label">Kaufpreis</label>
-            <div class="control">
-                <input class="input" type="number" step="0.01" name="product_purchasePrice" value="{{$product->product_purchasePrice}}" required>
-            </div>
-        </div>
 
-        <div class="field">
-            <label class="label">Restwert</label>
-            <div class="control">
-                <input class="input" type="number" step="0.01" name="product_residualValue" value="{{$product->product_residualValue}}" required>
+            <div class="field">
+                <label class="label">Produktnummer</label>
+                <div class="control">
+                    <input class="input" type="text" name="product_number" value="{{$product->product_number}}" required>
+                 </div>
             </div>
-        </div>
 
-        <div class="field">
-            <label class="label">Beschreibung</label>
-            <div class="control">
-                <textarea class="textarea" name="product_description" required>{{$product->product_description}}</textarea>
+            <div class="field">
+                <label class="label">Verwendungsbeginn (Date, Pflichtfeld)</label>
+                <div class="control">
+                    <input class="input" type="date" name="usage_start_date" required>
+                </div>
             </div>
+
+            <div class="field">
+                <label class="label">Verwendungsende (Date, optional)</label>
+                <div class="control">
+                    <input class="input" type="date" name="usage_end_date">
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Anschaffungspreis</label>
+                <div class="control">
+                    <input class="input" type="number" step="0.01" name="product_purchasePrice" value="{{$product->product_purchasePrice}}" required>
+                </div>
+            </div>
+
         </div>
 
         <div class="field is-grouped">
@@ -74,12 +82,36 @@
                     </div>
                 </div>
             </div>
+
+            <div class="field">
+                <label class="label">Inventarliste</label>
+                <div class="controle">
+                    <div class="select">
+                        <select class="input" name="inventory_id" required>
+                            <option value="" disabled selected>Wählen Sie eine Inventarliste</option>
+                            @foreach($inventories as $inventory)
+                                <option value="{{$inventory->id}}" @if($product->inventory_id == $inventory->id) selected @endif >{{$inventory->inventory_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
         </div>
         <br><br><br><br>
+
+        <div class="field">
+            <label class="label">Verwendung/Ort</label>
+            <div class="control">
+                <textarea class="textarea" name="product_description" >{{$product->product_description}}</textarea>
+            </div>
+        </div>
+
         <div class="field">
             <div class="control">
-                <button type="submit" class="button is-primary">Produkt aktualisieren</button>
+                <button type="submit" class="btn btn-success">Produkt aktualisieren</button>
             </div>
         </div>
     </form>
+    </div>
 @endsection

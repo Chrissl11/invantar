@@ -50,7 +50,7 @@ class CategoriesController extends Controller
             ;
         }
 
-        return redirect()->route('categories.create', [$category->id]);
+        return redirect()->route('products.index', [$category->id])->with('success', 'Kategorie wurde erfolgreich hinzugefügt!');
     }
 
     /**

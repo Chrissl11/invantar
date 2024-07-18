@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="control">
-            <button class="button is-primary" type="submit">Create</button>
+            <button class="button is-primary" type="submit">Erstellen</button>
         </div>
     </form>
 

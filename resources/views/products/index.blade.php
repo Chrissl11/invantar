@@ -12,16 +12,19 @@
     @if($products->isEmpty())
         <p>Keine Produkte verfügbar.</p>
     @else
+        <div class="table-responsive">
         <table class="table is-fullwidth table-primary">
             <thead>
             <tr>
                 <th>ID</th>
                 <th>Produktname</th>
-                <th>Kaufpreis</th>
-                <th>Restwert</th>
-                <th>Beschreibung</th>
+                <th>Produktnummer</th>
+                <th>Anschaffungspreis</th>
+                <th>Verwendung/Ort</th>
                 <th>Kategorie</th>
                 <th>Status</th>
+                <th>Verwendungsbeginn</th>
+                <th>Verwendungsende</th>
                 <th>Inventarliste</th>
                 <th>Aktion</th>
             </tr>
@@ -31,8 +34,8 @@
                 <tr>
                     <td>{{ $product->id }}</td>
                     <td>{{ $product->product_name }}</td>
+                    <td>{{ $product->product_number }}</td>
                     <td>{{ $product->product_purchasePrice }}</td>
-                    <td>{{ $product->product_residualValue }}</td>
                     <td>{{ $product->product_description }}</td>
                     <td>
                         @foreach($product->categories as $category)
@@ -40,6 +43,8 @@
                         @endforeach
                     </td>
                     <td>{{ $product->status->status_name }}</td>
+                    <td>{{$product->usage_start_date}}</td>
+                    <td>{{$product->usage_end_date}}</td>
                     <td>{{$product->inventory->inventory_name}}
                     <td>
                         <a class="button is-small is-info" href="{{ route('products.edit', $product->id) }}">Bearbeiten</a>
@@ -53,6 +58,7 @@
             @endforeach
             </tbody>
         </table>
+        </div>
     @endif
 
 @endsection
