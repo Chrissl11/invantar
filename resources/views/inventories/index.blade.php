@@ -6,6 +6,21 @@
             {{ session('success') }}
         </div>
     @endif
+
+    <h3 class="h3">Neues Inventar erstellen</h3>
+    <form action="{{ route('inventories.store') }}" method="POST">
+        @csrf
+        <div class="field">
+            <label class="label">Inventar Name</label>
+            <div class="control">
+                <input class="input" type="text" value="{{old('inventory_name')}}" required name="inventory_name" >
+            </div>
+        </div>
+        <div class="control">
+            <button class="button is-primary" type="submit">Create</button>
+        </div>
+    </form>
+
     <h2 class="h2">Inventare</h2>
     <table class="table is-fullwidth table-primary">
         <thead>
@@ -43,19 +58,7 @@
         @endforeach
         </tbody>
     </table>
-    <h3 class="h3">Neues Inventar erstellen</h3>
-    <form action="{{ route('inventories.store') }}" method="POST">
-        @csrf
-        <div class="field">
-            <label class="label">Inventar Name</label>
-            <div class="control">
-                <input class="input" type="text" value="{{old('inventory_name')}}" required name="inventory_name" >
-            </div>
-        </div>
-        <div class="control">
-            <button class="button is-primary" type="submit">Create</button>
-        </div>
-    </form>
+
     @if ($errors->any())
         <div>
             <ul>

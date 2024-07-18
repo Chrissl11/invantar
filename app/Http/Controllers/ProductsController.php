@@ -17,8 +17,16 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Product::all();
+        $categories = Category::all();
+        $statuses = Status::all();
+        $inventories = Inventory::all();
 
-        return view('products.index', compact('products'));
+        return view('products.index', [
+            'categories' => $categories,
+            'statuses' => $statuses,
+            'products' => $products,
+            'inventories' => $inventories
+        ]);
     }
 
     /**
@@ -26,7 +34,17 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view('products.index');
+        $products = Product::all();
+        $categories = Category::all();
+        $statuses = Status::all();
+        $inventories = Inventory::all();
+
+        return view('products.create',[
+            'products' => $products,
+            'categories' => $categories,
+            'statuses' => $statuses,
+            'inventories' => $inventories,
+        ]);
     }
 
     /**
@@ -71,7 +89,7 @@ class ProductsController extends Controller
         }
 
 
-        return redirect()->route('inventories.show', [$validatedData['inventory_id']])->with('success', 'Produkt wurde erfolgreich hinzugefügt!');
+        return redirect()->route('products.index')->with('success', 'Produkt wurde erfolgreich hinzugefügt!');
 
     }
 
@@ -128,7 +146,7 @@ class ProductsController extends Controller
         $product->categories()->sync($validatedData['category_id'] ?? []);
 
 
-        return redirect()->route('inventories.show', $product->inventory_id)->with('success', 'Produkt wurde erfolgreich aktualisiert!');
+        return redirect()->route('products.index', $product->inventory_id)->with('success', 'Produkt wurde erfolgreich aktualisiert!');
     }
 
     /**
@@ -140,7 +158,7 @@ class ProductsController extends Controller
         $product = Product::findOrFail($id);
         $inventory_id = $product->inventory_id;
         $product->delete();
-        return redirect()->route('inventories.show',$inventory_id)->with('success', 'Produkt wurde erfolgreich gelöscht!');
+        return redirect()->route('products.index',$inventory_id)->with('success', 'Produkt wurde erfolgreich gelöscht!');
     }
 
     protected function save(Product $product, Request $request)

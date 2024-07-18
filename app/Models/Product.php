@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Product extends Model
 {
+//TODO massenzuweisung Codedublikat zusammenfassen -> ProductsController -> methode store und update
     protected $fillable = [
         'product_name',
         'product_number',

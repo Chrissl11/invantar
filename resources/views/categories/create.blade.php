@@ -8,7 +8,7 @@
     @endif
 
     <h2 class="h2">Kategorien</h2>
-    <table class="table is-fullwidth table-primary">cd
+    <table class="table is-fullwidth table-primary">
         <thead>
         <tr>
             <th>Kategorie</th>
