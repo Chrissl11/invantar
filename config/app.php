@@ -1,7 +1,8 @@
 <?php
 
 return [
-
+    /*'providers' => [
+        KyslikColumnSortableColumnSortableServiceProvider::class,],*/
     /*
     |--------------------------------------------------------------------------
     | Application Name

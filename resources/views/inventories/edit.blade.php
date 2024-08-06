@@ -1,27 +1,34 @@
-@extends('layouts.app')
+<x-app-layout>
+    @include('components/success_message')
+    @include('components/error_message')
 
-@section('content')
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Inventarliste bearbeiten') }}
+        </h2>
+    </x-slot>
 
-    <h1>Inventar Bearbeiten</h1>
 
-    <div class="box">
-        <h2>{{ $inventory->inventory_name }}</h2>
-    </div>
 
     <form method="POST" action="{{ route('inventories.update', $inventory->id) }}">
         @csrf
         @method('PUT')
 
         <div class="field">
-            <label class="label">Inventory Name</label>
+            <label class="label">Inventar Name</label>
+            <div class="box">
+                <h3 class="h3">"{{ $inventory->inventory_name }}"</h3>
+            </div>
+
+
             <div class="control">
                 <input class="input"  type="text" value="{{ $inventory->inventory_name }}" required name="inventory_name">
             </div>
         </div>
 
         <div class="control">
-            <button class="button is-primary" type="submit">Aktualisieren</button>
+            <button class="btn btn-success" type="submit">Aktualisieren</button>
         </div>
     </form>
 
-@endsection
+</x-app-layout>

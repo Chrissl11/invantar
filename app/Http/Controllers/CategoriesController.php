@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Inventory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class CategoriesController extends Controller
 {
@@ -13,7 +15,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        return view('categories.index', compact('categories'));
+        return view('categories.index');
     }
 
     /**
@@ -21,11 +23,10 @@ class CategoriesController extends Controller
      */
     public function create()
     {
-        $inventory_id = request()->get('inventory_id');
+        $categories = Category::where('user_id', auth()->id())->get();
 
         return view('categories.create', [
-            'inventory_id' => $inventory_id,
-            'categories' => Category::all()
+            'categories' => $categories
         ]);
     }
 
@@ -34,21 +35,21 @@ class CategoriesController extends Controller
      */
     public function store(Request $request)
     {
-        $inventory_id = request()->get('inventory_id');
+
         $validatedData = $request->validate([
-            'category_name' => 'required|unique:categories|max:255'
+            'category_name' => [
+                'required',
+                'max:255',
+                Rule::unique('categories')->where(function ($query) {
+                    return $query->where('user_id', auth()->id());
+                })
+            ],
         ]);
         $category = new Category();
         $category->category_name = $validatedData['category_name'];
+        $category->user_id = Auth::id();
         $category->save();
 
-
-        if ($inventory_id) {
-            $inventory_id = Inventory::findOrFail($inventory_id);
-
-            return redirect()->route('categories.create', ['inventory_id' => $inventory_id])->with('success', 'Kategorie wurde erfolgreich hinzugefügt!');
-            ;
-        }
 
         return redirect()->route('products.index', [$category->id])->with('success', 'Kategorie wurde erfolgreich hinzugefügt!');
     }
@@ -66,7 +67,11 @@ class CategoriesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $category = Category::findOrFail($id);
+
+        return view('categories.edit', [
+        'category' => $category
+        ]);
     }
 
     /**
@@ -74,7 +79,22 @@ class CategoriesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validatedData = $request->validate([
+            'category_name' => [
+                'required',
+                'max:255',
+                Rule::unique('categories')->where(function ($query) {
+                    return $query->where('user_id', auth()->id());
+                })
+            ],
+        ]);
+
+        $category = Category::findOrFail($id);
+        $category->category_name = $validatedData['category_name'];
+        $category->save();
+
+        return redirect()->route('categories.create')->with('success', 'Kategorie wurde erfolgreich aktualisiert!');
+
     }
 
     /**

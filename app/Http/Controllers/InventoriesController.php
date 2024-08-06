@@ -7,6 +7,7 @@ use App\Models\Inventory;
 use App\Models\Product;
 use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InventoriesController extends Controller
 {
@@ -15,7 +16,7 @@ class InventoriesController extends Controller
      */
     public function index()
     {
-        $inventories = Inventory::all();
+        $inventories = Inventory::all()->where('user_id', auth()->id());
         return view('inventories.index', ['inventories' => $inventories]);
     }
 
@@ -37,6 +38,7 @@ class InventoriesController extends Controller
         ]);
         $inventory = new Inventory();
         $inventory->inventory_name = $validatedData['inventory_name'];
+        $inventory->user_id = Auth::id();
         $inventory->save();
         return redirect()->route('inventories.index')->with('success','Inventar wurde erfolgreich hinzugefügt!');
 

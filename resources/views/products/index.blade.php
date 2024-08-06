@@ -1,64 +1,54 @@
-@extends('layouts.app')
+<x-app-layout>
+    @include('components/success_message')
+    @include('components/error_message')
 
-@section('content')
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-    <h2 class="h2">Inventar </h2>
-
-    <h3 class="h3">Produkte</h3>
+        <x-slot name="header">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('Produkte') }}
+            </h2>
+        </x-slot>
     @if($products->isEmpty())
         <p>Keine Produkte verfügbar.</p>
     @else
-        <div class="table-responsive">
-        <table class="table is-fullwidth table-primary">
-            <thead>
-            <tr>
-                <th>ID</th>
-                <th>Produktname</th>
-                <th>Produktnummer</th>
-                <th>Anschaffungspreis</th>
-                <th>Verwendung/Ort</th>
-                <th>Kategorie</th>
-                <th>Status</th>
-                <th>Verwendungsbeginn</th>
-                <th>Verwendungsende</th>
-                <th>Inventarliste</th>
-                <th>Aktion</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($products as $product)
-                <tr>
-                    <td>{{ $product->id }}</td>
-                    <td>{{ $product->product_name }}</td>
-                    <td>{{ $product->product_number }}</td>
-                    <td>{{ $product->product_purchasePrice }}</td>
-                    <td>{{ $product->product_description }}</td>
-                    <td>
-                        @foreach($product->categories as $category)
-                            {{ $category->category_name }}@if(!$loop->last), @endif
-                        @endforeach
-                    </td>
-                    <td>{{ $product->status->status_name }}</td>
-                    <td>{{$product->usage_start_date}}</td>
-                    <td>{{$product->usage_end_date}}</td>
-                    <td>{{$product->inventory->inventory_name}}
-                    <td>
-                        <a class="button is-small is-info" href="{{ route('products.edit', $product->id) }}">Bearbeiten</a>
-                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline-block;">
-                            @csrf
-                            @method('DELETE')
-                            <button class="button is-small is-danger" type="submit">Löschen</button>
-                        </form>
-                    </td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-        </div>
+        @include('components/filter')
+        @include('products/table')
     @endif
 
-@endsection
+    {{--sortieren mit JS--}}
+    <script>
+        $(document).ready(function(){
+            $('th[data-sort]').on('click', function(){
+                var table = $(this).parents('table').eq(0);
+                var rows = table.find('tbody tr').toArray().sort(comparer($(this).index()));
+                this.asc = !this.asc;
+                if (!this.asc){rows = rows.reverse();}
+                for (var i = 0; i < rows.length; i++){table.append(rows[i]);}
+            });
+
+            function comparer(index) {
+                return function(a, b) {
+                    var valA = getCellValue(a, index), valB = getCellValue(b, index);
+                    return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB);
+                };
+            }
+
+            function getCellValue(row, index){ return $(row).children('td').eq(index).text(); }
+        });
+
+            document.addEventListener('DOMContentLoaded', function () {
+
+                document.getElementById('filterForm').addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(this);
+                    const queryString = new URLSearchParams(formData).toString();
+
+                    window.location.href = `{{ route('products.index') }}?${queryString}`;
+                });
+            });
+        </script>
+
+</x-app-layout>
+{{--@push('scripts')
+    {{ $dataTable->scripts(attributes: ['type' => 'module']) }}
+@endpush--}}

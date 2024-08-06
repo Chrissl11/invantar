@@ -1,13 +1,12 @@
-@extends('layouts.app')
+<x-app-layout>
+    @include('components/success_message')
+    @include('components/error_message')
 
-@section('content')
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <h2 class="h2">Inventar Details</h2>
+        <x-slot name="header">
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ __('Inventar') }}
+            </h2>
+        </x-slot>
 
     <div class="box">
         <h2 class="h3">{{ $inventory->inventory_name }}</h2>
@@ -139,4 +138,4 @@
             </div>
         </form>
     </div>
-@endsection
+    </x-app-layout>

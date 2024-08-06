@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property string|null $product_name
@@ -12,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Product extends Model
 {
-//TODO massenzuweisung Codedublikat zusammenfassen -> ProductsController -> methode store und update
+    use SoftDeletes;
     protected $fillable = [
         'product_id',
         'product_name',
@@ -22,8 +23,10 @@ class Product extends Model
         'product_description',
         'inventory_id',
         'status_id',
+        'category_id',
         'usage_start_date',
         'usage_end_date',
+        'deleted_at'
     ];
 
     public function inventory(): BelongsTo
@@ -37,5 +40,9 @@ class Product extends Model
     public function status()
     {
         return $this->belongsTo(Status::class, 'status_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

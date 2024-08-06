@@ -14,6 +14,7 @@ composer_version: "2"
 web_environment: []
 corepack_enable: false
 default_container_timeout: "240"
+webimage_extra_packages: [php-zip]
 
 # Key features of DDEV's config.yaml:
 
@@ -202,7 +203,7 @@ default_container_timeout: "240"
 # disable_settings_management: false
 # If true, DDEV will not create CMS-specific settings files like
 # Drupal's settings.php/settings.ddev.php or TYPO3's AdditionalConfiguration.php
-# In this case the user must provide all such settings.
+# In this case the users must provide all such settings.
 
 # You can inject environment variables into the web container with:
 # web_environment:
@@ -211,7 +212,7 @@ default_container_timeout: "240"
 
 # no_project_mount: false
 # (Experimental) If true, DDEV will not mount the project into the web container;
-# the user is responsible for mounting it manually or via a script.
+# the users is responsible for mounting it manually or via a script.
 # This is to enable experimentation with alternate file mounting strategies.
 # For advanced users only!
 
@@ -243,7 +244,7 @@ default_container_timeout: "240"
 # For example, with a web app on port 3000 inside the container, this config would
 # expose that web app on https://<project>.ddev.site:9999 and http://<project>.ddev.site:9998
 # web_extra_exposed_ports:
-#  - name: myapp
+#  - name: app
 #    container_port: 3000
 #    http_port: 9998
 #    https_port: 9999

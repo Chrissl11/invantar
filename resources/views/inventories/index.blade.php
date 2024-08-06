@@ -1,27 +1,24 @@
-@extends('layouts.app')
+<x-app-layout>
+    @include('components/success_message')
+    @include('components/error_message')
 
-@section('content')
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    <h3 class="h3">Neues Inventar erstellen</h3>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Inventarlisten') }}
+        </h2>
+    </x-slot>
     <form action="{{ route('inventories.store') }}" method="POST">
         @csrf
         <div class="field">
-            <label class="label">Inventar Name</label>
+            <label class="label">Neue Inventarliste erstellen</label>
             <div class="control">
                 <input class="input" type="text" value="{{old('inventory_name')}}" required name="inventory_name" >
             </div>
         </div>
         <div class="control">
-            <button class="button is-primary" type="submit">Erstellen</button>
+            <button class="btn btn-success" type="submit">Erstellen</button>
         </div>
     </form>
-
-    <h2 class="h2">Inventare</h2>
     <table class="table is-fullwidth table-primary">
         <thead>
         <tr>
@@ -45,12 +42,12 @@
                 </td>
                 <td>
                     <div class="buttons">
-                        <a class="button is-small is-info" href="{{ route('inventories.edit', $inventory->id) }}">Bearbeiten</a>
+                        <a class="btn btn-sm btn-primary" href="{{ route('inventories.edit', $inventory->id) }}">Bearbeiten</a>
                         <form action="{{ route('inventories.destroy', $inventory->id) }}" method="POST"
                                style="display: inline-block;" onsubmit="return confirm('Sind Sie sicher, dass Sie dieses Inventar löschen möchten?');">
                             @csrf
                             @method('DELETE')
-                            <button class="button is-small is-danger" type="submit">Löschen</button>
+                            <button class="btn btn-sm btn-danger" type="submit">Löschen</button>
                         </form>
                 </td>
                 </div>
@@ -68,6 +65,4 @@
             </ul>
         </div>
     @endif
-
-
-@endsection
+</x-app-layout>

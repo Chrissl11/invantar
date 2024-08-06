@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\ProductsDataTable;
 use App\Models\Category;
 use App\Models\CategoryProduct;
 use App\Models\Inventory;
@@ -11,12 +12,69 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
+    private function applyFilters($query, $filters)
+    {
+        if (!empty($filters['product_name'])) {
+            $query->where('product_name', 'like', '%' . $filters['product_name'] . '%');
+        }
+
+        if (!empty($filters['product_number'])) {
+            $query->where('product_number', 'like', '%' . $filters['product_number'] . '%');
+        }
+
+        if (!empty($filters['product_purchasePrice'])) {
+            $query->where('product_purchasePrice', $filters['product_purchasePrice']);
+        }
+
+        if (!empty($filters['product_description'])) {
+            $query->where('product_description', 'like', '%' . $filters['product_description'] . '%');
+        }
+
+        if (!empty($filters['category'])) {
+            $query->whereHas('categories', function($query) use ($filters) {
+                $query->where('category_name', 'like', '%' . $filters['category'] . '%');
+            });
+        }
+
+        if (!empty($filters['status_name'])) {
+            $query->whereHas('status', function($query) use ($filters) {
+                $query->where('status_name', 'like', '%' . $filters['status_name'] . '%');
+            });
+        }
+
+        if (!empty($filters['usage_start_date'])) {
+            $query->where('usage_start_date', '>=', $filters['usage_start_date']);
+        }
+
+        if (!empty($filters['usage_end_date'])) {
+            $query->where('usage_end_date', '<=', $filters['usage_end_date']);
+        }
+
+        if (!empty($filters['inventory_name'])) {
+            $query->whereHas('inventory', function ($query) use ($filters) {
+                $query->where('inventory_name', 'like', '%' . $filters['inventory_name'] . '%');
+            });
+        }
+            if (!empty($filters['include_deleted'])) {
+                $query->withTrashed();
+            } else {
+                $query->whereNull('deleted_at');
+            }
+
+
+        return $query;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $products = Product::all();
+        $filter = $_GET;
+        $builder = Product::withTrashed()->where('user_id', auth()->id());
+        $builder = $this->applyFilters($builder, $filter);
+
+
+        $products = $builder->paginate(10);
         $categories = Category::all();
         $statuses = Status::all();
         $inventories = Inventory::all();
@@ -64,7 +122,8 @@ class ProductsController extends Controller
             'status_id' => '',
             'usage_start_date' => 'required|date',
             'usage_end_date' => 'nullable|date|after_or_equal:usage_start_date',
-
+        ],
+        [ 'usage_end_date.after_or_equal' => 'Das Verwendungsende darf nicht vor dem Verwendungsbeginn liegen.',
         ]);
 
         $product = new Product();
@@ -79,6 +138,7 @@ class ProductsController extends Controller
         $product->status_id = $validatedData['status_id'];
         $product->usage_start_date = $validatedData['usage_start_date'];
         $product->usage_end_date = $validatedData['usage_end_date'];
+        $product->user_id = auth()->id();
         $product->saveOrFail();
 
 
@@ -153,7 +213,7 @@ class ProductsController extends Controller
         $product->categories()->sync($validatedData['category_id'] ?? []);
 
 
-        return redirect()->route('products.index', $product->inventory_id)->with('success', 'Produkt wurde erfolgreich aktualisiert!');
+        return redirect()->route('products.index')->with('success', 'Produkt wurde erfolgreich aktualisiert!');
     }
 
     /**
@@ -172,6 +232,28 @@ class ProductsController extends Controller
     {
 
     }
+    public function restore($id)
+    {
+        $product = Product::withTrashed()->findOrFail($id);
+        $product->restore();
+
+        return redirect()->route('products.index')->with('success', 'Produkt wurde erfolgreich wiederhergestellt!');
+    }
+   /* public function indexFiltering(Request $request)
+    {
+        $filter = $request->query('filter');
+
+        if (!empty($filter)) {
+            $products = Product::sortable()
+                ->where('products.name', 'like', '%'.$filter.'%')
+                ->paginate(5);
+        } else {
+            $products = Product::sortable()
+                ->paginate(5);
+        }
+
+        return view('products.index')->with('products', $products)->with('filter', $filter);
+    }*/
 
 
 }
