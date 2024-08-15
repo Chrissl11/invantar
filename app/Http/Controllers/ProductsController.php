@@ -74,7 +74,7 @@ class ProductsController extends Controller
         $builder = $this->applyFilters($builder, $filter);
 
 
-        $products = $builder->paginate(10);
+        $products = $builder->paginate($_GET['itemsPerPage'] ?? 10);
         $categories = Category::all();
         $statuses = Status::all();
         $inventories = Inventory::all();

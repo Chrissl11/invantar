@@ -15,7 +15,7 @@
     @endif
 
     {{--sortieren mit JS--}}
-    <script src="{{ asset('js/table-filter-sort.js') }}" defer></script>
+    @vite(['resources/js/Table_Sort.js', 'resources/js/Table_Paginate.js'])
 
 
 </x-app-layout>

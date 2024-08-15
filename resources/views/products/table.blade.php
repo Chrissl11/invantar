@@ -75,4 +75,3 @@
 
     {{$products->links()}}
 </div>
-<script src="{{ asset('js/Table_Paginate.js') }}"></script>
