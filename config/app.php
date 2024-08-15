@@ -1,8 +1,6 @@
 <?php
 
 return [
-    /*'providers' => [
-        KyslikColumnSortableColumnSortableServiceProvider::class,],*/
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -84,6 +82,23 @@ return [
     'fallback_locale' => env('APP_FALLBACK_LOCALE', 'en'),
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'en_US'),
+
+    /*
+|--------------------------------------------------------------------------
+| Available locales
+|--------------------------------------------------------------------------
+|
+| List all locales that your application works with
+|
+*/
+
+    'available_locales' => [
+        'English' => 'en',
+        'Russian' => 'ru',
+        'French' => 'fr',
+        'Spanish' => 'es',
+        'German' => 'de',
+    ],
 
     /*
     |--------------------------------------------------------------------------

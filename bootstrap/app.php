@@ -14,7 +14,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->use([
+            \Illuminate\Session\Middleware\StartSession::class,
+            \App\Http\Middleware\Localization::class
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

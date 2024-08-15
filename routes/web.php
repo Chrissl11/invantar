@@ -5,17 +5,30 @@ use App\Http\Controllers\InventoriesController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StatusesController;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+
+Route::get('/set-locale/{locale}', function ($locale) {
+    Session::put('locale', $locale);
+    App::setLocale($locale);
+    return redirect('/');
+});
 
 Route::get('/', function () {
     return view('welcome');
+});
+Route::get('language/{locale}', function ($locale) {
+    App::setLocale($locale);
+    Session::put('locale', $locale);
+
+    return redirect()->back();
 });
 
 Route::resource('/inventories',InventoriesController::class);
 Route::resource('/products',ProductsController::class);
 Route::resource('/categories',CategoriesController::class);
 Route::resource('/statuses',StatusesController::class);
-/*Route::get('/products', [ProductsController::class, 'indexFiltering'])->name('products.index');*/
 Route::patch('/products/{id}/restore', [ProductsController::class, 'restore'])->name('products.restore');
 
 
@@ -30,3 +43,4 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+

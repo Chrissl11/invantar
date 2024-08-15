@@ -10,6 +10,7 @@
 --}}
 
 
+
 <div class="table-responsive">
     <table id="products-table" class="table is-fullwidth table-primary">
         <thead>
@@ -64,5 +65,14 @@
         @endforeach
         </tbody>
     </table>
+    <label for="itemsPerPage">Produkte pro Seite:</label>
+    <select id="itemsPerPage" name="itemsPerPage">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+    </select>
+
     {{$products->links()}}
 </div>
+<script src="{{ asset('js/Table_Paginate.js') }}"></script>
